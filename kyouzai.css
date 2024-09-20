@@ -1,0 +1,110 @@
+body {
+  max-width: 40em;
+  margin: 1em 2em 1em;
+}
+body.content{
+  max-width: 35em;
+  margin: 1em 2em 1em;
+}
+@media print{
+  body.content {
+					margin: auto;
+	}
+}
+@page {
+				margin-top: 2em;
+}
+
+tr:nth-child(2n) {
+				background-color: rgba(0, 0, 0, 0.05);
+}
+table {
+				border: 2px solid rgba(0, 0, 0, 0.10);
+				background-color: #fefefe;
+				margin: 0.2em 0 0.5em;
+				}
+
+.toc h2 {
+  border-left: #2a2  solid 6px;
+  padding-left: .3em;
+}
+h3 {
+  margin: .2em 0 .2em;
+}
+h4 {
+  margin: .2em 0 .1em;
+	font-size: 100%;
+}
+h4::before {
+  content: "■";
+}
+h5 {
+  margin: 0;
+	font-size: 100%;
+}
+h5::before {
+  content: "○";
+}
+
+section {
+				margin: 1em 0 1em;
+				break-inside: avoid;
+}
+
+.content h2 {
+  margin: 0.2em 0 .3em;
+}
+
+.content .question h2::before {
+				content: "■";
+}
+.content .question h2 {
+  margin: 0.2em 0 0.4em;
+	font-size: 130%;
+	letter-spacing: 0.1em;
+}
+
+.content .question p {
+  font-size: 104%;
+  text-indent: 0;
+	padding-left: 0.4em;
+  margin: 0 0 .3em;
+  font-family: "BIZ UDゴシック Regular", "Hiragino Kaku Gothic ProN", sans-serif;
+	line-height: 2;
+}
+
+.content hr {
+  border: none;
+  background-image: linear-gradient(to right, #333, #333 0.5em, transparent 0.5em);
+	height: 1px;
+  background-size: 1em 1px;
+  background-position: left bottom;
+  background-repeat: repeat-x;
+	margin: 1em 0 0.3em;
+}
+.content p.section-marker::before {
+				content: "▨ ";
+}
+.content p.section-marker {
+  text-indent: 0;
+  font-family: "BIZ UDゴシック Regular", "Hiragino Kaku Gothic ProN", sans-serif;
+	color: #024;
+}
+.content p {
+  font-size: 120%;
+  text-indent: 1em;
+  padding: 0;
+  margin: 0;
+  font-family:"UD デジタル 教科書体 N-R", "BIZ UDゴシック Regular", "Hiragino Kaku Gothic ProN", sans-serif;
+	line-height: 1.6;
+}
+
+dl {
+  margin: 0 0.5em 0;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-left: 1.5em;
+}
