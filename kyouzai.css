@@ -91,8 +91,10 @@ section {
 	color: #024;
 }
 .content p {
-  font-size: 120%;
   text-indent: 1em;
+}
+.content p, .content li {
+  font-size: 120%;
   padding: 0;
   margin: 0;
   font-family:"UD デジタル 教科書体 N-R", "BIZ UDゴシック Regular", "Hiragino Kaku Gothic ProN", sans-serif;
