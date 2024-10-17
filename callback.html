@@ -3,16 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>なぞの教材保管庫</title>
+<title>コールバックを利用した数増やしゲームをつくろう | なぞの教材保管庫</title>
 <link rel="stylesheet" href="kyouzai.css">
 <style><!--
+body { width: 100%; min-width: 100% }
+.question > * { width: 50em; max-width: 50em; }
+.question > pre { width: 80%; max-width: 90%; }
 code { font-family: "Consolas", "Monaco";}
-pre { background-color: #ddd; padding: 1em; overflow-x: scroll;}
+pre { background-color: #ddd; padding: 1em; }
+.hljs-keyword { color: #50a14f; }
+.hljs-params  { color: #a6264f; }
+.hljs-comment { color: blue; }
+.hljs-number  { color: #e45649; }
+.hljs-string  { color: brown; }
+.hljs-title  { color: #005478; }
+.hljs-tag  { color: #005478; }
 --></style>
 </head>
-<body>
-<p>問題1 :
-次の要件を満たす <code>apply</code> 関数を実装しなさい。</p>
+<body class="content">
+<h1>コールバックを利用した数増やしゲームをつくろう</h1>
+<div class="question">
+<h2>問題1</h2>
+<p>次の要件を満たす <code>apply</code> 関数を実装しなさい。</p>
 <p><code>apply</code> は、数値 <code>a</code>と <code>b</code>、および操作を行う関数 <code>operation</code> を引数として受け取ります。
 そして、<code>operation</code> を <code>a</code> と <code>b</code> に適用した結果を返します。
 例:</p>
@@ -27,8 +39,8 @@ pre { background-color: #ddd; padding: 1em; overflow-x: scroll;}
 <span class="hljs-built_in">console</span>.log(apply(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y</span>) </span>{ <span class="hljs-keyword">return</span> x * y + <span class="hljs-number">10</span>; })); <span class="hljs-comment">// 25</span>
 <span class="hljs-comment">// 5と3を掛けた後、その結果に対してさらに5と3を掛けます。</span>
 <span class="hljs-built_in">console</span>.log(apply(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y</span>) </span>{ <span class="hljs-keyword">return</span> x * y * x * y; })); <span class="hljs-comment">// 225</span>
-</code></pre><p>問題2 :
-次の要件を満たす <code>selectApply</code>関数を実装しなさい。</p>
+</code></pre><h2>問題2</h2>
+<p>次の要件を満たす <code>selectApply</code>関数を実装しなさい。</p>
 <p><code>apply</code> は、数値 <code>a</code> と <code>b</code>、および操作を行う関数 <code>operation1</code>, <code>operation2</code> を引数として受け取ります。
 そして、1が入力された場合は<code>operation1</code> を、2が入力された場合は<code>operation2</code>を、 <code>a</code> と <code>b</code> に適用した結果を返します。</p>
 <pre><code><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">selectApply</span>(<span class="hljs-params">a, b, operation1, operation2</span>) </span>{
@@ -36,32 +48,25 @@ pre { background-color: #ddd; padding: 1em; overflow-x: scroll;}
   <span class="hljs-comment">// ...</span>
 }
 <span class="hljs-built_in">console</span>.log(apply(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>,   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y</span>) </span>{ <span class="hljs-keyword">return</span> x + y; }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">x, y</span>) </span>{ <span class="hljs-keyword">return</span> x * y; })); <span class="hljs-comment">// 15</span>
-</code></pre><p>問題3:
+</code></pre><h2>問題3</h2>
 次の要件を満たす <code>setOperation</code>, <code>applyOperation</code> 関数を実装しなさい。
-<code>setOperation</code> は、操作を行う関数 <code>operation</code>を引数として受け取り、<code>operation</code>を変数に保存します。それ以外には何もしません。
-<code>applyOperation</code>は、数値<code>a</code>, <code>b</code>を受け取り、<code>setOperation</code>で保存しておいた関数を実行します。</p>
+<code>setOperation</code> は、操作を行う関数 <code>operation</code>を引数として受け取り、<code>operation</code>を変数に保存します。それ以外には何もしません。</p>
+<p><code>applyOperation</code>は、数値<code>a</code>, <code>b</code>を受け取り、<code>setOperation</code>で保存しておいた関数を実行します。</p>
 <p>ヒント: ここでは、<code>operation</code>の内容に<code>console.log</code>等を使わないと実行結果が確認できません。</p>
-<p>問題4:
-次の要件を満たす <code>setOperationHidari</code>, <code>setOperationMigi</code>, <code>setValue</code>関数を実装しなさい。
-<code>setValue</code> は、<code>window.prompt</code>によりふたつの数字を入力させ、保存します。（ヒント：<code>Number(...)</code>で文字列から数値に変換）</p>
+<h2>問題4</h2>
+<p>次の要件を満たす <code>setOperationHidari</code>, <code>setOperationMigi</code>, <code>setValue</code>関数を実装しなさい。</p>
+<p><code>setValue</code> は、<code>window.prompt</code>によりふたつの数字を入力させ、保存します。（ヒント：<code>Number(...)</code>で文字列から数値に変換）</p>
 <p><code>setOperationHidari</code>は、操作を行う関数 <code>operation</code>を引数として受け取り、左のボタンが押されたときに実行する関数として保存します。
 <code>setOperationMigi</code>は、操作を行う関数 <code>operation</code>を引数として受け取り、右のボタンが押されたときに実行する関数として保存します。</p>
-<p>以下のテキストを.htmlの拡張子を付けて保存してください。</p>
+<p>ヒント: 以下のテキストを.htmlの拡張子を付けて保存してください。これでボタンを二つ表示することができます。</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
-<span class="hljs-selector-tag">p</span> { <span class="hljs-attribute">display</span>: flex; <span class="hljs-attribute">gap</span>: <span class="hljs-number">10px</span>; }
-
-
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="handlebars"><span class="xml"><span class="hljs-comment">&lt;!--
-&lt;html&gt;
-&lt;style&gt;
-.raw { display: flex; flex-direction: raw; gap: 10px;}
-.raw div, .raw button { width: 300px; padding: 5px; margin: 5px; background: #ddd; box-sizing: border-box; }
-
-
-&lt;/style&gt;
-&lt;script&gt;&lt;!--
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span>
+<span class="handlebars"><span class="xml">&lt;!--
+.row { display: flex; flex-direction: row; gap: 10px;}
+.row div, .row button { width: 300px; padding: 5px; margin: 5px; background: #ddd; box-sizing: border-box; }
+--&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>&lt;!--
 
 addEventListener('load', () =&gt; {
 
@@ -69,21 +74,23 @@ addEventListener('load', () =&gt; {
 
 });
 
---&gt;</span></span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+--&gt;</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"raw"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonHidari"</span>&gt;</span>左のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonMigi"</span>&gt;</span>右のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonHidari"</span>&gt;</span>左のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonMigi"</span>&gt;</span>右のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
-</code></pre><p>左のボタンが押されたときに実行する関数として保存するには、<code>addEventListner(&#39;click&#39;, ...)</code>を使用します。</p>
-<pre><code><span class="hljs-keyword">let</span> buttonHidari = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'buttonHidari'</span>);
+</code></pre><p>左のボタンが押されたときに実行する関数として保存するには、<code>addEventListner(&#39;click&#39;, ...)</code>を使用します。<strong>問題3で実装した関数である<code>setOperation</code>と、ブラウザが提供している関数である<code>addEventListener</code>の類似性を理解してください。</strong></p>
+<pre><code><span class="hljs-keyword">const</span> buttonHidari = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'buttonHidari'</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hidariOshita</span>(<span class="hljs-params"></span>) </span>{
   alert(<span class="hljs-string">'左が押されたよ'</span>);
 };
 
 buttonHidari.addEventListener(<span class="hljs-string">'click'</span>, hidariOshita);
-</code></pre><p>問題5:
-つぎのようなゲームをつくりなさい。</p>
+</code></pre>
+<h2>問題5</h2>
+<p>つぎのようなゲームをつくりなさい。</p>
 <p>
 最初に、画面に「１」が左右に二つ表示されています。これを<code>numberHidari</code> (←)と<code>numberMigi</code> (→)と呼ぶことにします。</p>
 <p>ふたつの数を受け取り、一つの数を返す関数が5種類ありますが、その中から2つの関数がランダムに選ばれ、画面に表示されています。<code>operationHidari</code>と <code>operationMigi</code>と呼ぶことにします。</p>
@@ -93,40 +100,39 @@ buttonHidari.addEventListener(<span class="hljs-string">'click'</span>, hidariOs
 そのあと、数字をそれぞれ「1」にリセットします。</p>
 <ul>
 <li>ヒント1: 5種類の関数を配列に保存しましょう。
-<li>ヒント2: 選ばれた関数を適用し、<code>numberHidari</code>に保存する関数を作成しましょう。</ul>
+<li>ヒント2: 選ばれた関数を適用し、<code>numberHidari</code>に保存する関数を作成しましょう。
+<li>ヒント3: 左のボタンを押すときと右のボタンを押すときで、関数に引数を渡す順序も入れ替わるようにしたり、使わなかったほうの関数が次のターンに必ず表示されるようにしたり、関数を全種類使い切るまでは、同じ関数が二度現れないようにすると、より面白いゲームになる可能性があります。</ul>
+<p>ヒント: 以下のテキストを.htmlの拡張子を付けて保存してください。これで数字を表示する場所、関数を表示する場所、ボタン表示することができます。</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
-<span class="hljs-selector-tag">p</span> { <span class="hljs-attribute">display</span>: flex; <span class="hljs-attribute">gap</span>: <span class="hljs-number">10px</span>; }
-
-
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="handlebars"><span class="xml"><span class="hljs-comment">&lt;!--
-&lt;html&gt;
-&lt;style&gt;
-.raw { display: flex; flex-direction: raw; gap: 10px;}
-.raw div, .raw button { width: 300px; padding: 5px; margin: 5px; background: #ddd; box-sizing: border-box; }
-
-
-&lt;/style&gt;
-&lt;script&gt;&lt;!--
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span>
+<span class="handlebars"><span class="xml">&lt;!--
+.row { display: flex; flex-direction: row; gap: 10px;}
+.row div, .row pre, .row button { width: 300px; padding: 5px; margin: 5px; background: #ddd; box-sizing: border-box; }
+--&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>&lt;!--
 
 addEventListener('load', () =&gt; {
-  // ここにJavaScriptプログラムを記入
+
+  // この部分にJavaScriptプログラムを記入
+
 });
 
---&gt;</span></span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+--&gt;</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"raw"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showNumberHidari"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showNumberMigi"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"raw"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showOperationHidari"</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showOperationMigi"</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"raw"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonHidari"</span>&gt;</span>左のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonMigi"</span>&gt;</span>右のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showNumberHidari"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showNumberMigi"</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">pre</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showOperationHidari"</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">pre</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"showOperationMigi"</span>&gt;</span>...<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonHidari"</span>&gt;</span>左のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"buttonMigi"</span>&gt;</span>右のボタン<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
-</code></pre><p>数字を表示</p>
-<pre><code>  let <span class="hljs-keyword">showNumberHidari </span>= document.getElementById(<span class="hljs-string">"showNumberHidari"</span>)<span class="hljs-comment">;</span>
-  <span class="hljs-keyword">showNumberHidari.textContent </span>= <span class="hljs-number">16</span><span class="hljs-comment">;</span>
-</code></pre><p>関数を表示</p>
-<pre><code>  let <span class="hljs-keyword">showOperationHidari </span>= document.getElementById(<span class="hljs-string">"showOperationHidari"</span>)<span class="hljs-comment">;</span>
-  <span class="hljs-keyword">showOperationHidari.textContent </span>= operationHidari.toString()<span class="hljs-comment">;</span>
+</code></pre><p>数字を表示するコード</p>
+<pre><code><span class="hljs-keyword">const</span> showNumberHidari = document.getElementById(<span class="hljs-string">"showNumberHidari"</span>)<span class="hljs-comment">;</span>
+showNumberHidari.textContent = <span class="hljs-number">16</span><span class="hljs-comment">;</span>
+</code></pre><p>関数を表示するコード</p>
+<pre><code><span class="hljs-keyword">const</span> showOperationHidari </span>= document.getElementById(<span class="hljs-string">"showOperationHidari"</span>)<span class="hljs-comment">;</span>
+showOperationHidari.textContent = operationHidari.toString()<span class="hljs-comment">;</span>
 </code></pre>
+</div>
 </body>
 </html>
