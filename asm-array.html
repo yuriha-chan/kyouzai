@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>なぞの教材保管庫</title>
+<link rel="stylesheet" href="kyouzai.css">
+<style><!--
+body.content {
+  max-width: 46em;
+}
+td:first-child, td:nth-child(2) {
+ white-space:nowrap;
+}
+td {
+  padding: 0.2em;
+}
+pre {
+  background: #f4f4f4;
+  padding: 1em;
+  line-height: 1.3;
+}
+pre, code {
+	font-family: monospace, monospace;
+}
+.hljs-comment {
+  color: #6a6;
+}
+.hljs-keyword {
+  font-weight: bold;
+}
+.hljs-built_in {
+  color: #804;
+}
+.hljs-number {
+  color: #028;
+}
+.hljs-syntax{
+  color: #a30;
+  font-weight: bold;
+}
+--></style>
+</head>
+<body class="content">
+<h1>機械語と配列</h1>
+<p>CPUは機械語を入力すると、計算する電子部品です。機械語とは、CPUが直接理解できることのできる数値の並びで、CPUが実行することのできる特定の処理に対応するものです。</p>
+<p>CPUの内部には「レジスタ」と呼ばれる高速な保存領域があり、およそ0.000000001秒に一回内容を読みだして計算したり、レジスタからレジスタにデータをコピーしたりすることができます。しかし、非常に限られた数(8個とか)しか記憶できませんし、どのレジスタから読みだすのかあらかじめ指定する必要があります。</p>
+<p>メモリと呼ばれる部品がCPUに接続されており、CPUから受け取ったデータを保存したり、保存したデータをCPUに送り返したりできます。1000000000個くらいの数を保存できますが、レジスタと比べて100倍くらい遅く、0.0000001秒くらい読み出しに時間がかかることがあります。メモリには大量のデータの保存場所があるので、どの番号のデータを読み出すのかを伝えることで、保存されたデータを得ることができます。</p>
+<p>機械で実行可能な命令には、例えば以下のようなものがあります。</p>
+<table>
+<tr><th>CPUが実行する命令</th><th>機械語の例</th><th>意味</th></tr>
+<tr><td>MOV R3, 4</td><td>0 3 4</td><td>4を決められたレジスタR3に保存</td></tr>
+<tr><td>MOV R1, R3</td><td>1 1 3</td><td>レジスタR3からレジスタR1に内容をコピー</td></tr>
+<tr><td>MOV [0], R1</td><td>2 0 1</td><td>メモリの0番地にレジスタR1の内容を保存</td></tr>
+<tr><td>MOV [R2], R4</td><td>3 2 4</td><td>レジスタR2から値を読みだし、その値により指定されるメモリ上の場所に、レジスタR4の内容を保存</td></tr>
+<tr><td>MOV [R3+5], R1</td><td>4 3 5 1</td><td>レジスタR3から値を読みだし、その値に5を足した数で指定されるメモリ上の場所に、別のレジスタR1の内容を保存</td></td></tr>
+<tr><td>MOV R1, [0]</td><td>5 1 0</td><td>メモリの0番地を読み出し、レジスタR1に保存</td></tr>
+<tr><td>MOV R4, [R2]</td><td>6 4 2</td><td>レジスタR2の値により指定されるメモリ上の場所に保存された値を、レジスタR4に保存</td></tr>
+<tr><td>MOV R1, [R3+5]</td><td>7 1 3 5</td><td>レジスタR3の値に5を足した数で指定されるメモリ上の場所に保存された値を、レジスタR1に保存</td></td></tr>
+<tr><td>ADD R1, R3</td><td>8 1 3</td><td>レジスタR3の値をレジスタR1に加算し、結果をレジスタR1に保存</td></tr>
+</table>
+<p>この表に例示した機械語は、一部を簡略化した架空の例ですが、実際のCPUの機械語と本質的にはほとんど同じものです。最初の数が命令の種類を示し、それに続く数が命令の実行に必要な詳細情報（例えば、操作するレジスタの番号や定数など）を示します。この形式は実際のCPUごとに異なりますが、基本的な構造はどのCPUでも同じです。</p>
+<p>以下のプログラム１～４は、JavaScriptやPythonのプログラムとして実行可能ですが、この機械語命令版を書いてみました。レジスタの数が限られているので、以下のようなルールでレジスタを使うことにしました。
+<ul>
+<li><code>R0</code> 一時的なデータを保存</li>
+<li><code>R1</code> 配列の大きさを保存</li>
+<li><code>R2～R6</code> 変数に保存されたデータを保存</li>
+<li><code>R7</code> ヒープポインタ(利用可能なメモリの先頭アドレスを保存)</li>
+<li>メモリ - 配列の内容を保存</li>
+</ul>
+</p>
+<section class="question">
+<h2>課題1</h2>
+<p>プログラム１～４の機械語バージョンを紙の上で実行し、RETされる値を答えてください。そして、JavaScriptもしくはPythonのプログラムがreturnする値と一致することを確かめてください。</p>
+<p>ただし、初期状態ではすべてのレジスタが0で、メモリの内容もすべて0であるものとします。</p>
+<hr>
+<h3>プログラム 1</h3>
+<pre><code class="lang-python">a = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+b = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+a[<span class="hljs-number">2</span>] = <span class="hljs-number">1</span>
+<span class="hljs-syntax">return</span> b[<span class="hljs-number">2</span>]
+</code></pre>
+<h4>機械語命令（アセンブリ）</h4>
+<pre><code><span class="hljs-keyword">MOV </span><span class="hljs-built_in">R1</span>, <span class="hljs-number">3</span>    <span class="hljs-comment">; 配列長を表す定数 3 をロード</span>
+<span class="hljs-comment">; 配列 a の確保</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R2</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R2 に保存（a の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; 配列 b の確保</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R3</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R3 に保存（b の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; a[2] = 1</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>], <span class="hljs-number">1</span>   <span class="hljs-comment">; a[2] に 1 を代入</span>
+
+<span class="hljs-comment">; return b[2]</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R3</span>+<span class="hljs-number">2</span>]   <span class="hljs-comment">; b[2] を R0 にロード</span>
+<span class="hljs-keyword">RET</span> <span class="hljs-built_in">R0</span>            <span class="hljs-comment">; 戻り値を返す</span>
+</code></pre><hr>
+<h3 id="p2">プログラム 2</h3>
+<pre><code class="lang-python"><span class="hljs-selector-tag">a</span> = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+<span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span>
+<span class="hljs-selector-tag">a</span>[<span class="hljs-number">2</span>] = <span class="hljs-number">1</span>
+<span class="hljs-syntax">return</span> <span class="hljs-selector-tag">b</span>[<span class="hljs-number">2</span>]
+</code></pre>
+<h4>機械語命令（アセンブリ）</h4>
+<pre><code><span class="hljs-keyword">MOV </span><span class="hljs-built_in">R1</span>, <span class="hljs-number">3</span>    <span class="hljs-comment">; 配列長を表す定数 3 をロード</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R2</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R2 に保存（a の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R3</span>, <span class="hljs-built_in">R2</span>       <span class="hljs-comment">; b の参照を a の参照に設定</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>], <span class="hljs-number">1</span>   <span class="hljs-comment">; a[2] に 1 を代入</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R3</span>+<span class="hljs-number">2</span>]   <span class="hljs-comment">; b[2] を R0 にロード</span>
+<span class="hljs-keyword">RET</span> <span class="hljs-built_in">R0</span>            <span class="hljs-comment">; 戻り値を返す</span>
+</code></pre><hr>
+<h3>プログラム 3</h3>
+<pre><code class="lang-python">a = [[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+b = [a[<span class="hljs-number">0</span>], a[<span class="hljs-number">1</span>], a[<span class="hljs-number">2</span>]]
+a[<span class="hljs-number">0</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+<span class="hljs-syntax">return</span> b[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+</code></pre>
+
+<h4>機械語命令（アセンブリ）</h4>
+<pre><code><span class="hljs-keyword">MOV </span><span class="hljs-built_in">R1</span>, <span class="hljs-number">3</span>    <span class="hljs-comment">; 配列長を表す定数 3 をロード</span>
+
+<span class="hljs-comment">; 配列 a の確保</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R2</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R2 に保存（a の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; サブ配列を a[0], a[1], a[2] に割り当て</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[0] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">1</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[1] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[2] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; 配列 b の確保と初期化</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R3</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R3 に保存（b の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>]  <span class="hljs-comment">; a[0] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">0</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[0] に保存</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">1</span>]  <span class="hljs-comment">; a[1] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">1</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[1] に保存</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>]  <span class="hljs-comment">; a[2] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[2] に保存</span>
+
+<span class="hljs-comment">; a[0] = [1, 0, 0]</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R0 に保存（新しい配列の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R0</span>+<span class="hljs-number">0</span>], <span class="hljs-number">1</span>   <span class="hljs-comment">; 新しい配列の要素 0 に 1 を設定</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; a[0] に新しい配列の開始アドレスを設定</span>
+
+<span class="hljs-comment">; return b[0][0]</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R3</span>+<span class="hljs-number">0</span>]    <span class="hljs-comment">; b[0] の参照を R0 にロード</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R0</span>+<span class="hljs-number">0</span>]    <span class="hljs-comment">; b[0][0] を R0 にロード</span>
+<span class="hljs-keyword">RET</span> <span class="hljs-built_in">R0</span>            <span class="hljs-comment">; 戻り値を返す</span>
+</code></pre><hr>
+<h3>プログラム 4</h3>
+<pre><code class="lang-python">a = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+b = [a[0], a[1], a[2]]
+a[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] = 1
+<span class="hljs-syntax">return</span> b[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>]
+</code></pre>
+
+<h4>機械語命令（アセンブリ）</h4>
+<pre><code><span class="hljs-keyword">MOV </span><span class="hljs-built_in">R1</span>, <span class="hljs-number">3</span>    <span class="hljs-comment">; 配列長を表す定数 3 をロード</span>
+
+<span class="hljs-comment">; 配列 a の確保</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R2</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R2 に保存（a の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; サブ配列を a[0], a[1], a[2] に割り当て</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[0] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">1</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[1] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">R7</span>  <span class="hljs-comment">; a[2] にサブ配列の開始アドレスを保存</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+
+<span class="hljs-comment">; 配列 b の確保と初期化</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R3</span>, <span class="hljs-built_in">R7</span>       <span class="hljs-comment">; R7 を R3 に保存（b の開始アドレス）</span>
+<span class="hljs-keyword">ADD </span><span class="hljs-built_in">R7</span>, <span class="hljs-built_in">R1</span>    <span class="hljs-comment">; R7 を配列の長さ分インクリメント</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>]  <span class="hljs-comment">; a[0] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">0</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[0] に保存</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">1</span>]  <span class="hljs-comment">; a[1] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">1</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[1] に保存</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">2</span>]  <span class="hljs-comment">; a[2] を読み出し</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R3</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">R0</span>  <span class="hljs-comment">; b[2] に保存</span>
+
+<span class="hljs-comment">; a[0][0] = 1</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R2</span>+<span class="hljs-number">0</span>]   <span class="hljs-comment">; a[0] の参照を R0 にロード</span>
+<span class="hljs-keyword">MOV </span>[<span class="hljs-built_in">R0</span>+<span class="hljs-number">0</span>], <span class="hljs-number">1</span>   <span class="hljs-comment">; a[0][0] に 1 を代入</span>
+
+<span class="hljs-comment">; return b[0][0]</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R3</span>+<span class="hljs-number">0</span>]   <span class="hljs-comment">; b[0] の参照を R0 にロード</span>
+<span class="hljs-keyword">MOV </span><span class="hljs-built_in">R0</span>, [<span class="hljs-built_in">R0</span>+<span class="hljs-number">0</span>]   <span class="hljs-comment">; b[0][0] を R0 にロード</span>
+<span class="hljs-keyword">RET</span> <span class="hljs-built_in">R0</span>            <span class="hljs-comment">; 戻り値を返す</span>
+</code></pre>
+
+<h2>課題2</h2>
+<p>以下のプログラムを機械語で表すとどうなりますか。また、実行すると何が起こりますか？</p>
+<pre><code class="lang-python">a = [[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+b = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
+a[<span class="hljs-number">3</span>] = <span class="hljs-number">1</span>
+<span class="hljs-syntax">return</span> b[0]
+</code></pre>
+<pre><code class="lang-python">a = [[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+b = <span class="hljs-number">0</span>
+b[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+<span class="hljs-syntax">return</span> a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+</code></pre>
+</section>
+</body>
+</html>
