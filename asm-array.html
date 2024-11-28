@@ -39,6 +39,12 @@ pre, code {
   color: #a30;
   font-weight: bold;
 }
+.hljs-meta{
+  color: #c0e;
+}
+.aux-keyword{
+  color: #9b9;
+}
 --></style>
 </head>
 <body class="content">
@@ -199,7 +205,7 @@ a[<span class="hljs-string">0</span>][<span class="hljs-symbol">0</span>] = 1
 
 <h2>課題2</h2>
 <p>以下のプログラムを機械語で表すとどうなりますか。また、実行すると何が起こりますか？</p>
-<pre><code class="lang-python">a = [[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
+<pre><code class="lang-python">a = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
 b = [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>]
 a[<span class="hljs-number">3</span>] = <span class="hljs-number">1</span>
 <span class="hljs-syntax">return</span> b[0]
@@ -209,6 +215,177 @@ b = <span class="hljs-number">0</span>
 b[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
 <span class="hljs-syntax">return</span> a[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
 </code></pre>
+
+<h2>課題3*</h2>
+<p>(機械語が面白いと思った人は、この課題もやってみてください)</p>
+<p>run という関数を機械語（アセンブリ）でプログラムし、ウィンドウに表示するプログラムを作りました。実際のプログラムでは、メモリのアドレス0は使えないので、自由に使えるメモリ領域を読み出すようにしています。また、一つのデータがメモリ8つ分を使うプログラムを書いています。</p>
+<p>run.nasm</p>
+<pre>global run
+<span class="hljs-comment">; 関数の定義</span>
+run:
+<span class="hljs-comment">; ヒープポインタの読み出し</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">r8</span>, <span class="hljs-built_in">rcx</span>
+<span class="hljs-comment">; 長さ24 (0x18) のメモリ領域を確保して、先頭アドレスを <span class="hljs-built_in">r9</span> (a) に保存</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">r9</span>, <span class="hljs-built_in">r8</span>
+<span class="hljs-keyword">add</span>    <span class="hljs-built_in">r8</span>, 0x18
+<span class="hljs-comment">; 長さ24 (0x18) のメモリ領域を確保して、先頭アドレスを <span class="hljs-built_in">r10</span> (b) に保存</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">r10</span>, <span class="hljs-built_in">r8</span>
+<span class="hljs-keyword">add</span>    <span class="hljs-built_in">r8</span>, 0x18
+<span class="hljs-comment">; a[0] = b</span>
+<span class="hljs-keyword">mov</span>    [<span class="hljs-built_in">r9</span>], <span class="hljs-built_in">r10</span>
+<span class="hljs-comment">; 長さ24 (0x18) のメモリ領域を確保して、先頭アドレスを <span class="hljs-built_in">r11</span> (c) に保存</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">r11</span>, <span class="hljs-built_in">r8</span>
+<span class="hljs-keyword">add</span>    <span class="hljs-built_in">r8</span>, 0x18
+<span class="hljs-comment">; a[1] = c</span>
+<span class="hljs-keyword">mov</span>    [<span class="hljs-built_in">r9</span>+0x8], <span class="hljs-built_in">r11</span>
+<span class="hljs-comment">; 長さ24 (0x18) のメモリ領域を確保して、先頭アドレスを <span class="hljs-built_in">r12</span> (d) に保存</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">r12</span>, <span class="hljs-built_in">r8</span>
+<span class="hljs-keyword">add</span>    <span class="hljs-built_in">r8</span>, 0x18
+<span class="hljs-comment">; a[2] = d</span>
+<span class="hljs-keyword">mov</span>    [<span class="hljs-built_in">r9</span>+0x10], <span class="hljs-built_in">r12</span>
+<span class="hljs-comment">; a[0] を読み出す</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">rax</span>, [<span class="hljs-built_in">r9</span>]
+<span class="hljs-comment">; a[0][1] に 1 を代入</span>
+<span class="hljs-keyword">mov</span>    <span class="aux-keyword">qword</span> [<span class="hljs-built_in">rax</span>+0x8], 0x1
+<span class="hljs-comment">; b[1] を読み出す</span>
+<span class="hljs-keyword">mov</span>    <span class="hljs-built_in">rax</span>, [<span class="hljs-built_in">r10</span>+0x8]
+<span class="hljs-comment">; <span class="hljs-built_in">rax</span> を返す</span>
+<span class="hljs-keyword">ret</span>
+</pre>
+<p>show-window.c (run関数を実行して表示するということ以外、詳細を理解する必要はありません。)</p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> &lt;windows.h&gt;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> &lt;stdio.h&gt;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> &lt;stdint.h&gt;</span>
+
+<span class="hljs-comment">// ヒープ領域</span>
+size_t heap[<span class="hljs-number">1024</span>];
+<span class="hljs-comment">// run 関数のシグネチャを宣言</span>
+size_t run(size_t *input);
+
+<span class="hljs-comment">// ウィンドウプロシージャ（イベント処理を行う関数）</span>
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    <span class="hljs-keyword">switch</span> (uMsg) {
+        <span class="hljs-comment">// ウィンドウを描画したいとき</span>
+        <span class="hljs-keyword">case</span> WM_PAINT:
+          PAINTSTRUCT ps;
+          HDC hdc = BeginPaint(hwnd, &amp;ps);
+          
+          <span class="hljs-comment">// run関数の実行結果をvalueに保存</span>
+          size_t value = run(heap);
+          <span class="hljs-comment">// value の値を文字列に変換</span>
+          char buffer[<span class="hljs-number">100</span>];
+          snprintf(buffer, sizeof(buffer), <span class="hljs-string">"The number is: %lld"</span>, value);
+          <span class="hljs-comment">// 作成した文字列をウィンドウに描画</span>
+          TextOut(hdc, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>, buffer, lstrlenA(buffer));
+          
+          EndPaint(hwnd, &amp;ps);
+          <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        
+        <span class="hljs-comment">// ウィンドウが閉じられたとき</span>
+        <span class="hljs-keyword">case</span> WM_DESTROY:
+          <span class="hljs-comment">// アプリケーション終了メッセージを送信</span>
+          PostQuitMessage(<span class="hljs-number">0</span>);
+          <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        
+        <span class="hljs-comment">// それ以外のとき</span>
+        <span class="hljs-keyword">default</span>:
+          <span class="hljs-comment">// デフォルトの処理を実行</span>
+          <span class="hljs-keyword">return</span> DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    <span class="hljs-comment">// ウィンドウクラスの登録</span>
+    const char CLASS_NAME[] = <span class="hljs-string">"HelloWindowClass"</span>;
+    WNDCLASS wc = { };
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = CLASS_NAME;
+
+    <span class="hljs-keyword">if</span> (!RegisterClass(&amp;wc)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    }
+
+    <span class="hljs-comment">// ウィンドウ作成</span>
+    HWND hwnd = CreateWindowEx(
+        <span class="hljs-number">0</span>,                              <span class="hljs-comment">// 拡張スタイル</span>
+        CLASS_NAME,                     <span class="hljs-comment">// ウィンドウクラス名</span>
+        <span class="hljs-string">"Showing run() value"</span>,         <span class="hljs-comment">// ウィンドウタイトル</span>
+        WS_OVERLAPPEDWINDOW,            <span class="hljs-comment">// ウィンドウスタイル</span>
+        CW_USEDEFAULT, CW_USEDEFAULT,   <span class="hljs-comment">// 初期位置</span>
+        <span class="hljs-number">400</span>, <span class="hljs-number">200</span>,                       <span class="hljs-comment">// 幅と高さ</span>
+        NULL, NULL, hInstance, NULL)<span class="hljs-comment">;   // その他のパラメータ</span>
+
+    <span class="hljs-keyword">if</span> (hwnd == NULL) { <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; }
+
+    ShowWindow(hwnd, nCmdShow);
+
+    <span class="hljs-comment">// メッセージループ</span>
+    MSG msg = { };
+    <span class="hljs-keyword">while</span> (GetMessage(&amp;msg, NULL, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)) {
+        TranslateMessage(&amp;msg);
+        DispatchMessage(&amp;msg);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>コードのコンパイル (msys2-mingw64でコンパイルする場合)
+<pre>nasm -f elf64 run.nasm
+gcc -c show-window.c
+gcc -o show-window.exe run.o show-window.o -lgdi32</pre>
+<p>上のコマンドを実行すると、プログラムファイル<a href="asm-array-files/show-window.zip">show-window.exe</a>が作られます。<code>show-window.exe</code>を実行すると、The number is: 1 と表示されます。</p>
+<hr/>
+<p>以下は、show-window.exeファイルの機械語分析結果です。objdumpという分析ソフトを使うことで、プログラムファイルに含まれる機械語を分析して、表示できます。</p>
+<p>分析プログラムの実行:</p>
+<pre>
+objdump -M intel --insn-width=8 -d show-window.exe | grep -A 16 "&lt;run&gt;:"
+</pre>
+<p>実行結果:</p>
+<pre>
+0000000140001450 &lt;run&gt;:
+   140001450:   49 89 c8                        <span class="hljs-keyword">mov</span>   <span class="hljs-built_in">r8</span>,rcx
+   140001453:   4d 89 c1                        <span class="hljs-keyword">mov</span>   <span class="hljs-built_in">r9</span>,<span class="hljs-built_in">r8</span>
+   140001456:   49 83 c0 18                     <span class="hljs-keyword">add</span>   <span class="hljs-built_in">r8</span>,0x18
+   14000145a:   4d 89 c2                        <span class="hljs-keyword">mov</span>   <span class="hljs-built_in">r10</span>,<span class="hljs-built_in">r8</span>
+   14000145d:   49 83 c0 18                     <span class="hljs-keyword">add</span>   <span class="hljs-built_in">r8</span>,0x18
+   140001461:   4d 89 11                        <span class="hljs-keyword">mov</span>   <span class="aux-keyword">QWORD PTR</span> [<span class="hljs-built_in">r9</span>],<span class="hljs-built_in">r10</span>
+   140001464:   4d 89 c3                        <span class="hljs-keyword">mov</span>   <span class="hljs-built_in">r11</span>,<span class="hljs-built_in">r8</span>
+   140001467:   49 83 c0 18                     <span class="hljs-keyword">add</span>   <span class="hljs-built_in">r8</span>,0x18
+   14000146b:   4d 89 59 08                     <span class="hljs-keyword">mov</span>   <span class="aux-keyword">QWORD PTR</span> [<span class="hljs-built_in">r9</span>+0x8],<span class="hljs-built_in">r11</span>
+   14000146f:   4d 89 c4                        <span class="hljs-keyword">mov</span>   <span class="hljs-built_in">r12</span>,<span class="hljs-built_in">r8</span>
+   140001472:   49 83 c0 18                     <span class="hljs-keyword">add</span>   <span class="hljs-built_in">r8</span>,0x18
+   140001476:   4d 89 61 10                     <span class="hljs-keyword">mov</span>   <span class="aux-keyword">QWORD PTR</span> [<span class="hljs-built_in">r9</span>+0x10],<span class="hljs-built_in">r12</span>
+   14000147a:   49 8b 01                        <span class="hljs-keyword">mov</span>   rax,<span class="aux-keyword">QWORD PTR</span> [<span class="hljs-built_in">r9</span>]
+   14000147d:   48 c7 40 08 01 00 00 00         <span class="hljs-keyword">mov</span>   <span class="aux-keyword">QWORD PTR</span> [rax+0x8],0x1
+   140001485:   49 8b 42 08                     <span class="hljs-keyword">mov</span>   rax,<span class="aux-keyword">QWORD PTR</span> [<span class="hljs-built_in">r10</span>+0x8]
+   140001489:   c3                              <span class="hljs-keyword">ret</span>
+</pre>
+<p>バイナリエディタでshow-window.exeを編集し、画面に「The number is: 2」を表示させてください。</p>
+<p>ヒント1: バイナリエディタとは、ファイルに保存されたデータを数として表示、編集するソフトです。ためしにテキストファイルを開いてみてください。</p>
+<p>ヒント2: run関数は、4989c84d89c1 という機械語の並びから始まります。4989c84d89c1をバイナリエディタで検索してください。</p>
+<p>ヒント3: 1を代入する機械語を編集し、2を代入する機械語に変更してください。</p>
+<p>追加課題: 以下の機械語を参考に、 r9 (a), [r10] (b[0]), r11 - r9 の値を表示してみてください。</p>
+<pre>4c 89 c0                mov    rax,r8
+4c 89 c8                mov    rax,r9
+4c 89 d0                mov    rax,r10
+49 8b 00                mov    rax,[r8]
+49 8b 01                mov    rax,[r9]
+49 8b 02                mov    rax,[r10]
+49 8b 40 08             mov    rax,[r8+0x8]
+49 8b 41 08             mov    rax,[r9+0x8]
+49 8b 42 08             mov    rax,[r10+0x8]
+49 89 c0                mov    r8,rax
+49 89 c1                mov    r9,rax
+49 89 00                mov    [r8],rax
+49 89 01                mov    [r9],rax
+49 89 40 08             mov    [r8+0x8],rax
+49 89 41 08             mov    [r9+0x8],rax
+4c 29 c0                sub    rax,r8
+4c 29 c8                sub    rax,r9
+c3                      ret
+</pre>
+<code>sub rax,r8</code> は、<code>rax = rax - r8</code> という計算をします。
 </section>
 </body>
 </html>
