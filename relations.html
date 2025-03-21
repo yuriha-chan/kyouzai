@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> エンティティの設計方法を学ぼう | なぞの教材保管庫</title>
+    <link rel="stylesheet" href="kyouzai.css">
+    <style>
+        :root { line-height: 1.8 }
+        .canvas {
+          position: relative;
+          border: 1px solid;
+          margin: 0.5em 0 0.7em;
+        }
+        .waza { border-radius: 12px; padding: 0 6px 0; border: #fc8 2px solid; background-color: #fec; margin: 0 4px; white-space: nowrap;}
+        .type { padding: 0 2px 0; border: #aad 2px solid; background-color: #ddf; margin: 0 4px;}
+        .pokemon { padding: 0 2px 0; border: #aa2 2px dashed; background-color: #ffa; margin: 0 4px;}
+        .category { text-decoration: underline }
+        .number { color: #a00; }
+        .attribute { color: #028; font-weight: bold }
+        .cardinality { border-radius: 0.5em; border: 1px solid #000; padding: 0 0.2em 0; background-color: #e5ffdd; }
+    </style>
+</head>
+<body class="content">
+    <h2>エンティティ・型・インスタンス</h2>
+<p>
+プログラムが扱う「何か」を、<strong>エンティティ</strong>と呼びます。エンティティとは、「存在しているもの」「実体としてあるもの」という意味です。あまり正確な言い方ではありませんが、人によっては、オブジェクトと呼ぶこともあります。
+</p>
+<ul><li>
+      <span class="category">わざ</span> …　<span class="waza">かえんほうしゃ</span> <span class="waza">ほのおのうず</span> <span class="waza">そらをとぶ</span> ...
+<li><span class="category">タイプ</span> …　<span class="type">ほのお</span> <span class="type">みず</span> <span class="type">でんき</span> ...
+</ul>
+
+<p>ここで<span class="category">わざ</span>や<span class="category">タイプ</span>を<strong><ruby><rb>型</rb><rt>かた</rt></ruby></strong>または<strong>タイプ</strong>と呼びます。あまり正確な言い方ではありませんが、人によっては、エンティティの種類、概念、カテゴリー、クラスなどと呼ぶこともあります。</p>
+<p><span class="waza">かえんほうしゃ</span>を<span class="category">わざ</span>の<strong>インスタンス</strong>と呼びます。インスタンスとは、「実例」という意味です。<span class="type">ほのお</span>は<span class="category">タイプ</span>のインスタンスです。</p>
+<ul>
+<li><span class="waza">かえんほうしゃ</span>の<span class="attribute">わざタイプ</span>は<span class="type">ほのお</span>
+<li><span class="waza">そらをとぶ</span>の<span class="attribute">わざタイプ</span>は<span class="type">ひこう</span>
+</ul>
+<p>
+「<span class="category">わざ</span>型のエンティティには、<span class="attribute">わざタイプ</span>として、<span class="category">タイプ</span>型のエンティティが設定されている。」と表現できます。
+</p>
+<p>ここで、<span class="attribute">わざタイプ</span>を<span class="category">わざ</span>の<strong>属性</strong>またはアトリビュート(attribute)と呼びます。プロパティ(property)と呼ぶこともあります。アトリビュートとは関連づけられるもの、プロパティとは所有物という意味です。</p>
+
+<p>わざ型のエンティティは、他にも、<span class="category">数値</span>型の属性として、<span class="attribute">ダメージ</span>も持っているでしょう。</p>
+
+<p>余談…<span class="number">20</span> や <span class="number">0.5</span> は<span class="category">数値</span>型のインスタンスですが、<span class="number">20</span> や <span class="number">0.5</span> を「エンティティ」とは呼ぶことはあまりありません。エンティティとは、存在する数が有限の何かであったり、属性を持つ可能性があったり、生成したり消滅させたりするのに何らかの手続きがあるものを指すことが多いです。</p>
+
+<p>属性の名前と、型は一致する必要がないことに気を付けてください。以下の例もみてください。</p>
+<ul>
+<li><span class="pokemon">ギャラドス</span>の<span class="attribute">進化前ポケモン</span>は<span class="pokemon">コイキング</span>
+<li><span class="pokemon">リザードン</span>の<span class="attribute">進化前ポケモン</span>は<span class="pokemon">リザード</span>
+<li><span class="pokemon">リザード</span>の<span class="attribute">進化前ポケモン</span>は<span class="pokemon">ヒトカゲ</span>
+</ul>
+<p>
+「<span class="category">ポケモン</span>には、<span class="category">ポケモン</span>型の属性<span class="attribute">進化前ポケモン</span>がある。」と言えます。「わざ型には、タイプ型の属性がある」の場合ではおおよそ意味がわかりましたが、「ポケモン型には、ポケモン型の属性がある」では意味が分かりません。属性の意味は、型の名前ではなく、属性の名前が重要であることを理解してください。
+</p>
+
+    <h2>多対1関係</h2>
+    <p>以下は、わざの属性「わざタイプ」による、わざとタイプの対応関係を示した図です。</p>
+    <div class="canvas" style="width: 360px; height: 180px;">
+    <svg width="300" height="180" style="position: absolute">
+        <line x1="120" y1="25" x2="258" y2="40" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="65" x2="258" y2="46" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="105" x2="258" y2="120" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="145" x2="258" y2="126" stroke="black" marker-end="url(#arrow)" />
+    </svg>
+    <div class="waza" style="position: absolute; left:20px; top: 10px">かえんほうしゃ</div>
+    <div class="waza" style="position: absolute; left:20px; top: 50px">ほのおのうず</div>
+    <div class="waza" style="position: absolute; left:20px; top: 90px">そらをとぶ</div>
+    <div class="waza" style="position: absolute; left:20px; top: 130px">ゴッドバード</div>
+    <div class="type" style="position: absolute; left:260px; top: 30px">ほのお</div>
+    <div class="type" style="position: absolute; left:260px; top: 110px">ひこう</div>
+    </div>
+<p>以下は、この属性を定義するコードの例です。</p>
+
+    <pre>
+    let typeList = { "ほのお": 0, "ひこう": 1 };
+    let wazaList = {
+      "かえんほうしゃ": { wazaType: typeList["ほのお"] }, 
+      "ほのおのうず": { wazaType: typeList["ほのお"] },
+      "そらをとぶ": { wazaType: typeList["ひこう"] },
+      "ゴッドバード": { wazaType: typeList["ひこう"] },
+    }
+    </pre>
+<p>(typeList["ほのお"]は、typeList.ほのお と同じ意味です。)</p>
+<p>以下は、上のコードを実行した場合のメモリのデータの例です。</p>
+<table>
+<tr><th>メモリの番地</th><th>データ</th><th>意味</th></tr>
+<tr><td>(typeList)</td><td>0</td><td> オブジェクト <a href="#mem0">0</a></td></tr>
+<tr><td>(wazaList)</td><td>0</td><td> オブジェクト <a href="#mem13">13</a></td></tr>
+<tr><td id="mem0">0</td><td>200005</td><td>文字列「ほのお」</td></tr>
+<tr><td>1</td><td>0</td><td>数値 0</td></tr>
+<tr><td>2</td><td>200009</td><td>文字列「ひこう」</td></tr>
+<tr><td>3</td><td>1</td><td>数値 1</td></tr>
+<tr><td>4</td><td>0</td><td>おわり</td></tr>
+<tr><td>5</td><td>12411</td><td>ほ</td></tr>
+<tr><td>6</td><td>12398</td><td>の</td></tr>
+<tr><td>7</td><td>12362</td><td>お</td></tr>
+<tr><td>8</td><td>0</td><td>おわり</td></tr>
+<tr><td>...</td><td></td><td> (省略) </td></tr>
+<tr><td id="mem13">13</td><td>200022</td><td>文字列「かえんほうしゃ」</td></tr>
+<tr><td>14</td><td>100050</td><td>オブジェクト <a href="#mem50">-&gt; 50</a></td></tr>
+<tr><td>15</td><td>200030</td><td>文字列「ほのおのうず」</td></tr>
+<tr><td>16</td><td>100053</td><td>オブジェクト <a href="#mem53">-&gt; 53</a></td></tr>
+<tr><td>17</td><td>200037</td><td>文字列「そらをとぶ」</td></tr>
+<tr><td>18</td><td>100056</td><td>オブジェクト <a href="#mem56">-&gt; 56</a></td></tr>
+<tr><td>19</td><td>200043</td><td>文字列「ゴッドバード」</td></tr>
+<tr><td>20</td><td>100059</td><td>オブジェクト <a href="#mem56">-&gt; 59</a></td></td></tr>
+<tr><td>21</td><td>0</td><td>おわり</td></tr>
+<tr><td>22</td><td>...</td><td>か</td></tr>
+<tr><td>23</td><td></td><td>え</td></tr>
+<tr><td>24</td><td></td><td>ん</td></tr>
+<tr><td>...</td><td></td><td> (省略) </td></tr>
+<tr><td id="mem50">50</td><td>100062</td><td>文字列「wazaType」</td></tr>
+<tr><td>51</td><td>0</td><td>数値 0 (「ほのお」タイプ)</td></tr>
+<tr><td>52</td><td>0</td><td>おわり</td></tr>
+<tr><td id="mem53">53</td><td>100062</td><td>文字列「wazaType」</td></tr>
+<tr><td>54</td><td>0</td><td>数値 0 (「ほのお」タイプ)</td></tr>
+<tr><td>55</td><td>0</td><td>おわり</td></tr>
+<tr><td id="mem56">56</td><td>100062</td><td>文字列「wazaType」</td></tr>
+<tr><td>57</td><td>1</td><td>数値 1 (「ひこう」タイプ)</td></tr>
+<tr><td>58</td><td>0</td><td>おわり</td></tr>
+<tr><td id="mem59">59</td><td>100062</td><td>文字列「wazaType」</td></tr>
+<tr><td>60</td><td>1</td><td>数値 1 (「ひこう」タイプ)</td></tr>
+<tr><td>61</td><td>0</td><td>おわり</td></tr>
+<tr><td>62</td><td>...</td><td>w</td></tr>
+<tr><td>63</td><td></td><td>a</td></tr>
+<tr><td>64</td><td></td><td>z</td></tr>
+<tr><td>65</td><td></td><td>a</td></tr>
+<tr><td>...</td><td></td><td> (省略) </td></tr>
+</table>
+    <h2>多対多関係</h2>
+    <p>以下は、ポケモンの属性「習得可能わざ」による、ポケモンとわざの対応関係を示した図です。</p>
+    <div class="canvas" style="width: 420px; height: 180px;">
+    <svg width="400" height="180" style="position: absolute">
+        <line x1="120" y1="30" x2="258" y2="25" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="35" x2="258" y2="65" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="40" x2="258" y2="105" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="85" x2="258" y2="30" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="90" x2="258" y2="70" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="135" x2="258" y2="110" stroke="black" marker-end="url(#arrow)" />
+        <line x1="120" y1="140" x2="258" y2="145" stroke="black" marker-end="url(#arrow)" />
+    </svg>
+    <div class="pokemon" style="position: absolute; left:20px; top: 20px">リザードン</div>
+    <div class="pokemon" style="position: absolute; left:20px; top: 70px">キュウコン</div>
+    <div class="pokemon" style="position: absolute; left:20px; top: 120px">ピジョット</div>
+    <div class="waza" style="position: absolute; left:260px; top: 10px">かえんほうしゃ</div>
+    <div class="waza" style="position: absolute; left:260px; top: 50px">ほのおのうず</div>
+    <div class="waza" style="position: absolute; left:260px; top: 90px">そらをとぶ</div>
+    <div class="waza" style="position: absolute; left:260px; top: 130px">ふきとばし</div>
+    </div>
+<p>以下は、習得可能わざを表すcanLearn属性を定義するコードの例です。</p>
+    <pre>
+    let typeList = { "ほのお": 0, "ひこう": 1, "ノーマル": 2 };
+    let wazaList = {
+      "かえんほうしゃ": { wazaType: typeList["ほのお"] },
+      "ほのおのうず": { wazaType: typeList["ほのお"] },
+      "そらをとぶ": { wazaType: typeList["ひこう"] },
+      "ふきとばす": { wazaType: typeList["ノーマル"] },
+    };
+    let pokemonList = {
+      "リザードン": {
+          canLearn: [
+              wazaList["かえんほうしゃ"],
+              wazaList["ほのおのうず"],
+              wazaList["そらをとぶ"]
+            ]
+        },
+      "キュウコン": {
+          canLearn: [
+              wazaList["かえんほうしゃ"],
+              wazaList["ほのおのうず"]
+            ]
+        },
+      "ピジョット": {
+          canLearn: [
+              wazaList["そらをとぶ"],
+              wazaList["ふきとばす"]
+            ]
+        },
+    };
+    </pre>
+    <p>おなじ種類のエンティティ同士の属性もあります。これは相性の例です。</p>
+    <div class="canvas" style="width: 420px; height: 220px;">
+    <svg width="420" height="220" style="position: absolute">
+        <line x1="80" y1="30" x2="258" y2="62" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="70" x2="258" y2="105" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="110" x2="258" y2="22" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="150" x2="258" y2="28" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="190" x2="258" y2="145" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="190" x2="258" y2="68" stroke="black" marker-end="url(#arrow)" />
+    </svg>
+    <div class="type" style="position: absolute; left:20px; top: 10px">くさ</div>
+    <div class="type" style="position: absolute; left:20px; top: 50px">みず</div>
+    <div class="type" style="position: absolute; left:20px; top: 90px">ほのお</div>
+    <div class="type" style="position: absolute; left:20px; top: 130px">ひこう</div>
+    <div class="type" style="position: absolute; left:20px; top: 170px">でんき</div>
+    <div class="type" style="position: absolute; left:260px; top: 10px">くさ</div>
+    <div class="type" style="position: absolute; left:260px; top: 50px">みず</div>
+    <div class="type" style="position: absolute; left:260px; top: 90px">ほのお</div>
+    <div class="type" style="position: absolute; left:260px; top: 130px">ひこう</div>
+    <div class="type" style="position: absolute; left:260px; top: 170px">でんき</div>
+    </div>
+    <p>相性が有利なタイプを属性"advantage"で表すとすると、以下のようなコードで表現可能です。</p>
+    <pre>
+    let typeList = {
+      "ほのお": { name: "ほのお" },
+      "みず": { name: "みず" },
+      "ほのお": { name: "ほのお" },
+      "ひこう": { name: "ひこう" },
+      "でんき": { name: "でんき" }
+    };
+    // タイプにadvantage 属性を設定する。
+    typeList["くさ"].advantage = [typeList["みず"]];
+    typeList["みず"].advantage = [typeList["ほのお"]];
+    typeList["ほのお"].advantage = [typeList["くさ"]];
+    typeList["ひこう"].advantage = [typeList["くさ"]];
+    typeList["でんき"].advantage = [typeList["みず"], typeList["ひこう"]];
+    </pre>
+    <p>いままでの例では、<span class="category">タイプ</span>は属性を持たなかったので整数で表していましたが、この例では属性を持つので、オブジェクトに定義を変更しています。</p>
+    <h2>1対1関係</h2>
+    <p>最後に、ポケモンと図鑑番号の例です。この例では、ポケモンと図鑑番号が1対1に対応しています。このように、エンティティと1対1に対応する整数や文字列を、IDと呼ぶこともあります。IDとはIdentifier(特定するもの)の略称です。</p>
+    <div class="canvas" style="width: 320px; height: 180px;">
+    <svg width="320" height="180" style="position: absolute">
+        <line x1="80" y1="37" x2="250" y2="37" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="87" x2="250" y2="87" stroke="black" marker-end="url(#arrow)" />
+        <line x1="80" y1="137" x2="250" y2="137" stroke="black" marker-end="url(#arrow)" />
+    </svg>
+    <div class="pokemon" style="position: absolute; left:20px; top: 20px">リザードン</div>
+    <div class="pokemon" style="position: absolute; left:20px; top: 70px">キュウコン</div>
+    <div class="pokemon" style="position: absolute; left:20px; top: 120px">ピジョット</div>
+    <div class="number" style="position: absolute; left:260px; top: 20px">6</div>
+    <div class="number" style="position: absolute; left:260px; top: 70px">38</div>
+    <div class="number" style="position: absolute; left:260px; top: 120px">18</div>
+  </div>
+  <h2>エンティティ関連図</h2>
+  <p>「<span class="category">わざ</span>型のエンティティは、<span class="category">タイプ</span>型の属性<span class="attribute">わざタイプ</span>があり、その関係は多対1である。」というような、型と型の関係を図で書くことができるとわかりやすくて便利です。</p>
+    <div class="canvas" style="width: 320px; height: 160px;">
+    <svg width="320" height="160" style="position: absolute">
+        <line x1="80" y1="57" x2="240" y2="57" stroke="black" marker-end="url(#arrow)" />
+    </svg>
+    <div class="category" style="position: absolute; left:20px; top: 40px">わざ</div>
+    <div class="category" style="position: absolute; left:260px; top: 40px">タイプ</div>
+    <div class="attribute" style="position: absolute; left:120px; top: 70px">わざタイプ</div>
+    <div class="cardinality" style="position: absolute; left:60px; top: 20px">多</div>
+    <div class="cardinality" style="position: absolute; left:240px; top: 20px">1</div>
+  </div>
+  <p>エンティティの関連図が書ければ、どのようなプログラムを書けばよいのか、ほとんど機械的に決めることができます。</p>
+
+<section class="question">
+  <h2>練習問題</h2>
+  <ol>
+  <li><span class="category">ポケモン</span>, <span class="category">タイプ</span>, <span class="category">わざ</span>の間の関係をすべて表したエンティティ関連図を描いてください。</p>
+  <li> レストランの経営ゲームを作成しようとしています。このゲームでは、エンティティの型として、
+  <ul>
+    <li><span class="category">客</span></li>
+    <li><span class="category">客レベル</span>: 「セレブ」、「普通客」、「貧乏学生」など</li>
+    <li><span class="category">テーブル</span></li>
+    <li><span class="category">メニュー</span>: カレー、シチュー、ハンバーグなど</li>
+    <li><span class="category">数値 (価格)</span></li>
+  </ul>
+  を扱いたいです。これらのエンティティ型の関連図を描いてください。</li></ol>
+  </section>
+  <svg>
+    <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+    <path d="M0,0 L6,3 L0,6 Z" fill="black" />
+    </marker>
+    </defs>
+  </svg>
+</body>
+</html>
