@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<title>HTMLのテスト</title>
+<style><!--
+  body { max-width: 41em; }
+  .c1 { background-color: rgb(200, 220, 255); }
+  .c2 { background-color: rgb(200, 240, 240); }
+  .c3 { background-color: rgb(240, 220, 220); }
+  .c4 { background-color: rgb(255, 222, 200); }
+  .c5 { background-color: rgb(240, 200, 255); }
+  .spaced { padding: 10px; }
+  .spaced2 { margin: 10px; }
+  .bordered { border: 3px solid rgb(255, 0, 150); }
+  .bordered2 { border: 2px dotted rgb(0, 0, 0); }
+--></style>
+</head>
+
+<!-- ここから本編 -->
+
+<!-- ←　この記号から、コメントが始まります。コメントは、画面に表示されません。コメントが終わるのは、この記号です → -->
+
+<body>
+<p>※この説明のHTMLファイル自体が教材になっています。ソースを表示したり、編集しながら読んでください。</p>
+<h1>HTMLについて</h1>
+<h2>簡単な例</h2>　
+<p>以下に、段落と強調を指定したHTMLの例を書きます。</p>
+<!-- <p> p: paragraph 段落 -->
+<p>こんにちは。</p>
+<p>今日はいい天気ですね。時折、心地よい風がそよぎ、澄み渡る空の下に広がる光景は、まさに自然の美しさそのものでございます。この素晴らしい晴天のもと、日々の喧騒を忘れ、静かに心を落ち着け、ただただこの瞬間を楽しむことができることの幸せを感じております。
+
+太陽の温かな光が私たちを包み込み、その恵みを存分に受けることができる今日のような日は、まさに大自然の恵みを実感するにふさわしい日であると言えるでしょう。空気の清々しさ、木々の緑の深さ、そして花々の色彩が織り成すこの景色に、心から感動を覚えるとともに、改めて生かされていることの喜びを感じずにはいられません。</p>
+<!-- strong: 強い、強調 -->
+<p>というわけで、布団が…<strong>吹っ飛んだ！</strong>…なーんてね～～。</p>
+
+<!-- <h2> h: headings 見出し -->
+<h2>ブロック要素</h2>
+<div style="background-color: rgb(200, 220, 255)"> こ </div>
+<div style="background-color: rgb(200, 240, 240)"> ん </div>
+<div style="background-color: rgb(240, 220, 220)"> に </div>
+<div style="background-color: rgb(255, 222, 200)"> ち </div>
+<div style="background-color: rgb(240, 200, 255)"> は </div>
+<p>styleで、スタイルを変更できます。上の例では、背景の色を設定しています。</p>
+
+<hr>
+<p>例1: 内側の余白 padding</p>
+<div style="background-color: rgb(240, 200, 255); padding: 40px;">こんにちは。</div>
+<p>例2: 外側の余白 margin</p>
+<div style="background-color: rgb(240, 200, 255); margin: 40px;">こんにちは。</div>
+<p>例3: 両方を指定</p>
+<div style="background-color: rgb(240, 200, 255); padding: 20px; margin: 20px;">こんにちは。</div>
+<p>上の例では、余白を設定しています。余白には二種類あり、ブロックの内側と外側の余白を別に指定できます。</p>
+
+<hr>
+<div style="background-color: rgb(240, 200, 255); border: 3px solid rgb(30, 30, 255);">こんにちは。</div>
+<p>上の例では、枠線を設定しています。</p>
+
+<p>p 要素も、段落として表示するのにちょうどよいスタイル（余白）があらかじめ設定された、ブロック要素の一種です。</p>
+
+
+<h2>クラス</h2>
+<p>スタイルがあらかじめ設定された「クラス」を設定することでも色を設定できます。</p>
+<div class="c1">こんにちは。</div>
+
+<p>「クラス」は複数指定できます。複数指定するには、空白で区切って並べます。</p>
+<div class="c1 spaced bordered">こんにちは。</div>
+
+<h2>入れ子構造</h2>
+<p>divの中にdivを入れられます。</p>
+<div class="c1 spaced">
+  <div class="c4 spaced spaced2 bordered">こ</div>
+  <div class="c4 spaced spaced2 bordered">ん</div>
+  <div class="c4 spaced spaced2 bordered">に</div>
+  <div class="c4 spaced spaced2 bordered">ち</div>
+  <div class="c4 spaced spaced2 bordered">は</div>
+</div>
+<p>divの中にdivを入れ、その中にdivを入れ…とします。</p>
+<div id="blocks" class="c1 spaced">
+  <div class="c5 spaced spaced2 bordered">こ</div>
+  <div class="c2 spaced spaced2 bordered2">
+    <div class="c5 spaced spaced2 bordered">ん</div>
+    <div class="c3 spaced spaced2 bordered2">
+      <div class="c5 spaced spaced2 bordered">に</div>
+      <div class="c4 spaced spaced2 bordered2">
+        <div class="c5 spaced spaced2 bordered">ち</div>
+          <div class="c5 spaced spaced2 bordered2">
+          <div class="c5 spaced spaced2 bordered">は</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>スクリプト</h2>
+<p id="x">スクリプトで、タグの中身を見ることができます。</p>
+<script>console.log('<p id="x">の中身を表示:', document.getElementById("x").textContent)</script>
+
+<p id="y"></p>
+<script>document.getElementById("y").textContent = "また、タグの中身をスクリプトで書き換えられます。"</script>
+
+<p id="y2">また、スクリプトでスタイルを変更することもできます。</p>
+<script>document.getElementById("y2").style.backgroundColor = "rgb(255, 255, 0)"</script>
+
+<p>入れ子のタグの中身を見るには、childrenを使います。</p>
+<p id="z"></p>
+<script>
+console.log(document.getElementById("blocks").children);
+let text = document.getElementById("blocks").children[1].children[1].children[0].textContent;
+document.getElementById("z").textContent = text;</script>
+
+<p>タグを作成するには、document.createElementを使用し、新しく作ったタグを追加するには、appendChildを使います。</p>
+<div id="w"></div>
+<script>
+let element = document.createElement("div");
+element.textContent = "新しいエレメント";
+element.style.backgroundColor = "rgb(200, 255, 255)";
+document.getElementById("w").appendChild(element);</script>
+
+<p>for文を使用して、たくさん作れます</p>
+<p id="w2"></p>
+<script>
+let textArray = ["こ", "ん", "に", "ち", "は"]
+for (let i = 0; i < 20; i++ ) {
+  let j = i % 5;  
+  let element = document.createElement("div");
+  element.textContent = textArray[j];
+  element.style.backgroundColor = "rgb(200, 255, 255)";
+  element.style.border = "2px dotted rgb(0, 0, 0)";
+  document.getElementById("w2").appendChild(element);
+}
+</script>
+
+<hr>
+<h2>発展的な課題</h2>
+<p>div の中にdivを入れ、その中にdivを入れ、というのを20回繰り返したものを、スクリプトを使って作ってください。</p>
+<div id="w3"></div>
+<script>
+</script>
+</body>
+</html>
