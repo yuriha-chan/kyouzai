@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技入力用のボタンをつくろう</title>
+<link rel="stylesheet" href="kyouzai.css">
+<style>
+.content {
+				max-width: 42em !important;
+}
+</style>
+</head>
+<body class="content">
+<section class="question">
+<h1>技入力用のボタンをつくろう</h1>
+<h2>復習1</h2>
+<p>document.getElementById, textContent, createElement について復習しよう</p>
+
+<h2>課題1</h2>
+<p>技の配列が与えられたら、あるdivの中に、その技のボタンを表示しよう</p>
+<h2>復習2</h2>
+<p>コールバック関数について、簡単に復習しよう。</p>
+
+<h2>課題2</h2>
+<ol>
+<li>以下のコードが「ほぼ同じ」であることを確かめよう。
+<li>prompt2の「ここに何か書く」を埋めて、同じ動作になるようにしよう。
+</ol>
+<code><pre>
+// 共通
+function f (s) {
+  return s + " と入力されました。　"
+}
+
+
+// version 1
+function a () {
+  const x = prompt("入力してください");
+  const y = f(x);
+  // ...
+  return y;
+}
+const x = a()
+console.log(x);
+
+
+// version 2
+function prompt2(return2) {
+  // ここに何か書く
+}
+function a2(return2) {
+  prompt2(function (x) {
+    const y = f(x);
+    // ...
+    return2(y);
+  })
+}
+a2(function (y) {
+  const x = y;
+  console.log(x);
+  }
+)
+</pre></code>
+
+<h2>課題3</h2>
+<p>戦闘のターンを処理する関数turn1 をコピーして、promptではなく、prompt2の書き方で書き直してみよう。書き直せたら、プログラムを実行し、同じ動作であることを確かめよう。
+</p>
+<h2>課題4</h2>
+<p> prompt2は、「入力用のウィンドウを表示し、ユーザーが文字を入力して決定ボタンを押したときに、return2(入力した文字列)を実行する関数」です。
+</p>
+<p>
+prompt2の実装を書き換えて、「技の選択ボタンを表示し、ユーザーがわざボタンを押したときに、return2(選択したわざ)を実行する関数」に変更してください。
+</p>
+</section>
+</body>
+</html>
