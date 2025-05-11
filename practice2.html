@@ -1,0 +1,112 @@
+<html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript練習問題 | なぞの教材保管庫</title>
+<link rel="stylesheet" href="kyouzai.css">
+<style><!--
+body { width: 100%; min-width: 100% }
+.question > * { width: 50em; max-width: 50em; }
+.question > pre { width: 80%; max-width: 90%; }
+code { font-family: "Consolas", "Monaco";}
+pre { background-color: #f2f2f2; padding: 1em; }
+.hljs-keyword { font-weight: bold; color: #50a14f; }
+.hljs-params  { color: #a6264f; }
+.hljs-comment { color: blue; }
+.hljs-number  { color: #e45649; }
+.hljs-string  { color: brown; }
+.hljs-title  { color: #005478; }
+.hljs-tag  { color: #005478; }
+--></style>
+</head>
+<body class="content">
+<h1>JavaScript練習問題2</h1>
+<div class="question">
+<h2 id="p0">問題0</h2>
+<p>以下の日本語の誤りを修正してください。</p>
+<h3 id="p0-1">問題0-1</h3>
+<p>わたしの好きなもの…　りんご、金魚、佐藤先生、赤色、「一石二鳥」という言葉、寝ること、相手のタイミングを読んで、ジャストガードが決まると気持ちよいです。</p>
+<h3 id="p0-2">問題0-2</h3>
+<p>クーラーボックスが二つあります。一つ目のクーラーボックスは赤色で、もう一つは青色です。まず、赤色のクーラーボックスのなかに、2Lのペットボトル入りの麦茶を3本いれ、ウインナーを4本いれました。次に、青色のクーラーボックスの中に、2Lのペットボトル入りの麦茶を5本いれ、ちくわを6本いれました。赤色の麦茶は何本ありますか？</p>
+<h2 id="p1">問題1</h2>
+<p>プログラムの誤りを修正してください。</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> mizu = 0;
+<span class="hljs-keyword">const</span> honoo = 1;
+<span class="hljs-keyword">const</span> kusa = 2;
+
+<span class="hljs-keyword">let</span> taipu = [mizu, honoo, kusa];
+<span class="hljs-keyword">let</span> i = Math.floor(Math.random() * 3)
+
+<span class="hljs-keyword">if</span> (taipu[i] == <span class="hljs-string">"mizu"</span>) {
+  console.log(<span class="hljs-string">"水が選ばれたよ。"</span>)
+}
+</code></pre>
+<h2 id="p2">問題2</h2>
+<p>プログラムの誤りを修正してください。</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> waza = [{<span class="hljs-built_in">name</span>: <span class="hljs-string">"hinoko"</span>, <span class="hljs-built_in">damage</span>: <span class="hljs-number">20</span>}, {<span class="hljs-built_in">name</span>: <span class="hljs-string">"mizudeppo"</span>, <span class="hljs-built_in">damage</span>: <span class="hljs-number">15</span>}, {<span class="hljs-built_in">name</span>: <span class="hljs-string">"kaenhousha"</span>, <span class="hljs-built_in">damage</span>: <span class="hljs-number">40</span>}]
+<span class="hljs-keyword">let</span> dam = [];
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+  dam.push(waza.<span class="hljs-built_in">damage</span>[i]);
+}
+console.<span class="hljs-built_in">log</span>(<span class="hljs-string">"2つめの技のダメージ"</span>, dam[<span class="hljs-number">1</span>]);
+</code></pre>
+<h2 id="p3">問題3</h2>
+<p>以下の説明を読んでください。</p>
+<p><code>addEventListener</code>は、次のような構文で使います。</p>
+<pre><code class="lang-javascript">element.addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">func</span>)</span>
+</code></pre>
+<p>このメソッドを実行すると、<code>element</code>がクリックされたときに、<code>func</code>を呼び出すように登録する。</p>
+<p><code>setTimeout</code>は、次のような構文で使います。</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-title">setTimeout</span>(<span class="hljs-params">func, time</span>)</span>
+</code></pre>
+<p>この関数を実行すると、(0.001×<code>time</code>)秒後に<code>func</code>を呼び出すように登録する。</p>
+<hr/>
+<p>以下のプログラムの間違いを修正してください。</p>
+<h3 id="p3-1">問題3-1</h3>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">logTime</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// 現在時刻を取得</span>
+  <span class="hljs-keyword">let</span> now = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+  <span class="hljs-built_in">console</span>.log(now);
+}
+setTimeout(logTime(), <span class="hljs-number">1000</span>);
+</code></pre>
+<h3 id="p3-2">問題3-2</h3>
+<pre><code class="lang-javascript">setTimeout(<span class="hljs-name">console</span>.log(<span class="hljs-string">"入力された値: "</span>, prompt(<span class="hljs-string">"入力してね"</span>)), <span class="hljs-number">1000</span>)
+</code></pre>
+<h2 id="p4">問題4</h2>
+<p>プログラムの誤りを修正してください。</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"y"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">// 3個のボタンを追加する。</span>
+<span class="hljs-keyword">let</span> y = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"y"</span>);
+y.appendChild(<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+                 <span class="hljs-keyword">let</span> button = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"button"</span>);
+                 button.textContent = <span class="hljs-string">"ボタンを押してね"</span>;
+              });
+</code></pre>
+<h2 id="p5">問題5</h2>
+<p>プログラムの誤りを修正してください。</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"y"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> numbers = [<span class="hljs-string">"一"</span>, <span class="hljs-string">"二"</span>, <span class="hljs-string">"三"</span>, <span class="hljs-string">"四"</span>, <span class="hljs-string">"五"</span>];
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createButton</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> x = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"button"</span>);
+  x.style.backgroundColor = <span class="hljs-string">"rgb(255, 0, 0)"</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"y"</span>).appendChild(x);
+  <span class="hljs-keyword">return</span> x;
+}
+<span class="hljs-keyword">const</span> button = createButton();
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+  button.textContent = numbers[i];
+  button.addEventListener(<span class="hljs-string">"click"</span>,
+                          <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"押されたボタンの番号"</span>, numbers[i]); }
+                         );
+}
+</code></pre>
+</body>
+</html>
