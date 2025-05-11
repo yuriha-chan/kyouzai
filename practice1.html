@@ -63,7 +63,7 @@ console.<span class="hljs-built_in">log</span>(<span class="hljs-string">"2つ�
   <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>());
 }
 <span class="hljs-keyword">let</span> button1 = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"button1"</span>);
-button1.addEvenetListener(<span class="hljs-string">"click"</span>, logTime());
+button1.addEventListener(<span class="hljs-string">"click"</span>, logTime());
 </code></pre>
 <h2>問題5</h2><p>以下のプログラムの間違っている点を修正してください。</p>
 <div>HTML:</div>
@@ -73,7 +73,7 @@ button1.addEvenetListener(<span class="hljs-string">"click"</span>, logTime());
 </code></pre>
 <div>JavaScript:</div>
 <pre><code class="lang-javascript"><span class="hljs-keyword">let</span> button2 = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"button2"</span>)
-button2.addEvenetListener(<span class="hljs-string">"click"</span>,
+button2.addEventListener(<span class="hljs-string">"click"</span>,
                           <span class="hljs-keyword">let</span> x = prompt(<span class="hljs-string">"入力してね"</span>);
                           <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"入力された値: "</span>, x);
                          );
@@ -91,7 +91,7 @@ button2.addEvenetListener(<span class="hljs-string">"click"</span>,
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"y"</span>).appendChild(x);
   <span class="hljs-keyword">return</span> x;
 }
-createButton.addEvenetListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span> { <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"おされたよ"</span>); });
+createButton.addEventListener(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span> { <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"おされたよ"</span>); });
 </code></pre>
 <h2>問題7</h2><p> 以下のプログラムの間違っている点を修正してください。</p>
 <div>HTML:</div>
